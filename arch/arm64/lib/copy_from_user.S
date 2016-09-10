@@ -57,10 +57,6 @@ ENDPROC(__copy_from_user)
 	.section .fixup,"ax"
 	.align	2
 9:	sub	x2, x4, x1
-	mov	x3, x2
-10:	strb	wzr, [x0], #1			// zero remaining buffer space
-	subs	x3, x3, #1
-	b.ne	10b
 	mov	x0, x2				// bytes not copied
 	ret
 	.previous
