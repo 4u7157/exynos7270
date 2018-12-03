@@ -52,6 +52,7 @@ SECTIONS
 		EXIT_CALL
 		*(.discard)
 		*(.discard.*)
+		*(.eh_frame)
 	}
 
 	. = PAGE_OFFSET + TEXT_OFFSET;
