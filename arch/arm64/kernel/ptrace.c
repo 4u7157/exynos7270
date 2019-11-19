@@ -1171,6 +1171,22 @@ long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
 						    datap);
 			break;
 
+		case COMPAT_PTRACE_GETFPREGS:
+			ret = copy_regset_to_user(child,
+						  &user_aarch32_ptrace_view,
+						  REGSET_FPR,
+						  0, VFP_STATE_SIZE,
+						  datap);
+			break;
+
+		case COMPAT_PTRACE_SETFPREGS:
+			ret = copy_regset_from_user(child,
+						    &user_aarch32_ptrace_view,
+						    REGSET_FPR,
+						    0, VFP_STATE_SIZE,
+						    datap);
+			break;
+
 #ifdef CONFIG_HAVE_HW_BREAKPOINT
 		case COMPAT_PTRACE_GETHBPREGS:
 			ret = compat_ptrace_gethbpregs(child, addr, datap);
