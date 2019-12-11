@@ -22,6 +22,8 @@ u64 perf_reg_value(struct pt_regs *regs, int idx)
 			return regs->compat_sp;
 		if ((u32)idx == PERF_REG_ARM64_LR)
 			return regs->compat_lr;
+		if ((u32)idx == 15) /* PERF_REG_ARM_PC */
+			return regs->pc;
 	}
 
 	if ((u32)idx == PERF_REG_ARM64_SP)
