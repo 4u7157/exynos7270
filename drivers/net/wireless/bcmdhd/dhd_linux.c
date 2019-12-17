@@ -8370,7 +8370,7 @@ dhd_attach(osl_t *osh, struct dhd_bus *bus, uint bus_hdrlen)
 		len = strlen(if_name);
 		ch = if_name[len - 1];
 		if ((ch > '9' || ch < '0') && (len < IFNAMSIZ - 2))
-			strncat(if_name, "%d", 2);
+			strcat(if_name, "%d");
 	}
 
 	/* Passing NULL to dngl_name to ensure host gets if_name in dngl_name member */
