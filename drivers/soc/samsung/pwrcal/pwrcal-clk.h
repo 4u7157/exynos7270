@@ -130,6 +130,17 @@ struct pwrcal_pll clk_##_id __attribute__((unused, aligned(8), section(".clk_pll
 	.ops		= _ops					\
 }
 
+#define CLK_PLL_NO_TABLE(_typ, _id, _pid, _lock, _con, _mux, _ops)	\
+struct pwrcal_pll clk_##_id __attribute__((unused, aligned(8), section(".clk_pll."))) = {	\
+	.clk.id		= _id,					\
+	.clk.parent	= &((clk_##_pid).clk),			\
+	.clk.offset	= _con,					\
+	.clk.status	= _lock,					\
+	.clk.name	= #_id,					\
+	.type		= _typ,					\
+	.mux		= &((clk_##_mux).clk),			\
+	.ops		= _ops					\
+}
 
 extern struct pwrcal_clk_ops frate_ops;
 struct pwrcal_clk_fixed_rate {
