@@ -707,6 +707,22 @@ static int sc_src_set_size(struct device *dev, int swap,
 	DRM_DEBUG("%s:x[%d]y[%d]w[%d]h[%d]\n",
 		__func__, pos->x, pos->y, pos->w, pos->h);
 
+	if (pos->x + pos->w > sz->hsize) {
+		dev_warn(dev, "wrong src size: pos->x[%d] + pos->w[%d] "
+			      "should be equal or less than sz->hsize[%d], "
+			      "try to adjust pos->w as [%d]\n",
+			pos->x, pos->w, sz->hsize, sz->hsize - pos->x);
+		pos->w = sz->hsize - pos->x;
+	}
+
+	if (pos->y + pos->h > sz->vsize) {
+		dev_warn(dev, "wrong src size: pos->y[%d] + pos->h[%d] "
+			      "should be equal or less than sz->vsize[%d], "
+			      "try to adjust pos->h as [%d]\n",
+			pos->y, pos->h, sz->vsize, sz->vsize - pos->y);
+		pos->h = sz->vsize - pos->y;
+	}
+
 	/* pixel offset */
 	cfg = (SCALER_SRC_YX(pos->x) |
 		SCALER_SRC_YY(pos->y));
@@ -1152,6 +1168,22 @@ static int sc_dst_set_size(struct device *dev, int swap,
 	if (swap) {
 		img_pos.w = pos->h;
 		img_pos.h = pos->w;
+	}
+
+	if (pos->x + pos->w > sz->hsize) {
+		dev_warn(dev, "wrong dst size: pos->x[%d] + pos->w[%d] "
+			      "should be equal or less than sz->hsize[%d], "
+			      "try to adjust pos->w as [%d]\n",
+			pos->x, pos->w, sz->hsize, sz->hsize - pos->x);
+		pos->w = sz->hsize - pos->x;
+	}
+
+	if (pos->y + pos->h > sz->vsize) {
+		dev_warn(dev, "wrong dst size: pos->y[%d] + pos->h[%d] "
+			      "should be equal or less than sz->vsize[%d], "
+			      "try to adjust pos->h as [%d]\n",
+			pos->y, pos->h, sz->vsize, sz->vsize - pos->y);
+		pos->h = sz->vsize - pos->y;
 	}
 
 	/* pixel offset */
