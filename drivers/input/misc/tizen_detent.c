@@ -43,10 +43,10 @@ extern struct class *sec_class;
 #define WAKELOCK_TIME		HZ/10
 
 enum direction_patten {
-	CounterClockwise = -2,
-	Detent_Return = -1,
-	Detent_Leave = 1,
-	Clockwise = 2,
+	CounterClockwise = -1,
+	Detent_Return = 0,
+	Detent_Leave = 0,
+	Clockwise = 1,
 	Direction_MAX,
 };
 
