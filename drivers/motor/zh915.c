@@ -193,10 +193,24 @@ static int zh915_haptic_play(struct input_dev *input, void *data,
 				struct ff_effect *effect)
 {
 	struct zh915_data *pZh915data = input_get_drvdata(input);
-	__u16 level = effect->u.rumble.strong_magnitude;
+	__u16 level = (effect->u.rumble.weak_magnitude & 0xe000) >> 13;
+
+	/* using ff_runble effect */
+	/* struct ff_rumble_effect {
+	 __u16 strong_magnitude; // strong_magnitude[15:15] = 0 (Reserved)
+				 // strong_magnitude[14:14]
+				 //   = Overdrive : 0 (Off) or 1 (On)
+				 // strong_magnitude[13:0]
+				 //   = Intensity Value : 0 (Stop)
+				 //     or 1 ~ 10000 (Intensity)
+	 __u16 weak_magnitude;	 // weak_magnitude[15:13]
+				 //   = Intensity Level : 1 ~ 5
+				 // weak_magnitude[12:0]
+				 //   = Frequency in 0.1Hz : 0 ~ 8191 (0 ~ 819.1 Hz)
+	}; */
 
 	if (level) {
-		pZh915data->level = level;
+		pZh915data->level = MAX_LEVEL / level;
 		queue_work(system_highpri_wq, &pZh915data->vibrator_work);
 	}
 	else {
